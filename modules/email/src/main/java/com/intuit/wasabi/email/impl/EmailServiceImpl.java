@@ -38,7 +38,9 @@ import java.util.Set;
 import static com.intuit.wasabi.email.EmailAnnotations.EMAIL_SERVICE_ENABLED;
 import static com.intuit.wasabi.email.EmailAnnotations.EMAIL_SERVICE_FROM;
 import static com.intuit.wasabi.email.EmailAnnotations.EMAIL_SERVICE_HOST;
+import static com.intuit.wasabi.email.EmailAnnotations.EMAIL_SERVICE_PASSWORD;
 import static com.intuit.wasabi.email.EmailAnnotations.EMAIL_SERVICE_SUBJECT_PREFIX;
+import static com.intuit.wasabi.email.EmailAnnotations.EMAIL_SERVICE_USERNAME;
 import static org.apache.commons.lang.StringUtils.isBlank;
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -49,9 +51,14 @@ import static org.slf4j.LoggerFactory.getLogger;
 public class EmailServiceImpl implements EmailService {
 
     private final static Logger LOGGER = getLogger(EmailServiceImpl.class);
+
     private boolean enabled;
+
     private String host;
     private String from;
+    private String username;
+    private String password;
+
     private String subjectPrefix;
     private EmailValidator emailVal = EmailValidator.getInstance();
     private EmailTextProcessor emailTextProcessor;
@@ -60,14 +67,16 @@ public class EmailServiceImpl implements EmailService {
     public EmailServiceImpl(final @Named(EMAIL_SERVICE_ENABLED) boolean enabled,
                             final @Named(EMAIL_SERVICE_HOST) String host,
                             final @Named(EMAIL_SERVICE_FROM) String from,
+                            final @Named(EMAIL_SERVICE_USERNAME) String username,
+                            final @Named(EMAIL_SERVICE_PASSWORD) String password,
                             final @Named(EMAIL_SERVICE_SUBJECT_PREFIX) String subjectPrefix,
                             final EmailTextProcessor emailTextProcessor) {
         this.enabled = enabled;
 
         setHost(host);
-
         setFrom(from);
-
+        this.username = username;
+        this.password = password;
         this.subjectPrefix = subjectPrefix;
         this.emailTextProcessor = emailTextProcessor;
     }
@@ -151,6 +160,7 @@ public class EmailServiceImpl implements EmailService {
                 email.setSubject(subjectPrefix + " " + subject);
                 email.setMsg(msg);
                 email.addTo(clearTo);
+                email.setAuthentication("", "");
                 email.send();
             } catch (EmailException mailExcp) {
                 LOGGER.error("Email could not be send because of " + mailExcp.getMessage());

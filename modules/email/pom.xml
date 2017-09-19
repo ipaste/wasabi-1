@@ -31,9 +31,11 @@
 
     <properties>
         <email.service.enabled>true</email.service.enabled>
-        <email.service.class.name>com.intuit.wasabi.email.impl.NoopEmailImpl</email.service.class.name>
-        <email.service.host>localhost</email.service.host>
-        <email.service.from>no-reply-wasabi@example.com</email.service.from>
+        <email.service.class.name>com.intuit.wasabi.email.impl.EmailServiceImpl</email.service.class.name>
+        <email.service.host>email-smtp.us-west-2.amazonaws.com</email.service.host>
+        <email.service.from>wasabi-no-reply@abtesting-prf.a.intuit.com</email.service.from>
+        <email.service.username>AKIAIF4MM6OKBSH3OMJQ</email.service.username>
+        <email.service.password>AkgMHqi5Tz0ra36FTNxRoZcQKEKmTVO7126dZSWQ0YI8</email.service.password>
     </properties>
 
     <profiles>
